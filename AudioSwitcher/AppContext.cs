@@ -12,7 +12,7 @@ namespace AudioSwitcher
             MenuItem exitMenuItem = new MenuItem("Exit", new EventHandler(Exit));
 
             notifyIcon = new NotifyIcon();
-            notifyIcon.Icon = Resource1.sound;
+            notifyIcon.Icon = Resources.sound;
             notifyIcon.ContextMenu = new ContextMenu(new MenuItem[]
                 {
                     exitMenuItem
