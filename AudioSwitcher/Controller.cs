@@ -130,7 +130,7 @@ namespace AudioSwitcher
             if (!ReadProcessMemory(process, lpRemoteBuffer, lpLocalBuffer, BUFFER_SIZE, IntPtr.Zero))
                 throw new SystemException("Failed to read from process memory");
 
-             return Marshal.PtrToStringAuto(lpLocalBuffer + listViewItemSize);
+            return Marshal.PtrToStringAuto(lpLocalBuffer + listViewItemSize);
         }
 
         private static void PrepareProcessAndBuffers(int speakerList, out IntPtr lpRemoteBuffer, out IntPtr lpLocalBuffer, out IntPtr process)

@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AudioSwitcher
@@ -20,7 +14,7 @@ namespace AudioSwitcher
             notifyIcon = new NotifyIcon();
             notifyIcon.Icon = Resource1.sound;
             notifyIcon.ContextMenu = new ContextMenu(new MenuItem[]
-                { 
+                {
                     exitMenuItem
                 });
             notifyIcon.Visible = true;
