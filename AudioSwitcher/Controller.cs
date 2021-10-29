@@ -2,7 +2,6 @@
 using AudioSwitcher.KeyboardHook;
 using AudioSwitcher.Structs;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -24,17 +23,27 @@ namespace AudioSwitcher
         private void OnKeyPressed(object sender, GlobalKeyboardHookEventArgs e)
         {
             var code = (VirtualCode)e.KeyboardData.VirtualCode;
-            if (!Hotkeys.ContainsKey(code))
+            Debug.WriteLine(code);
+            if (Recording)
+            {
+                if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown && !Settings.Hotkeys.Keys.Contains(code))
+                    Settings.Hotkeys[code] = true;
+                AppContext.configuration.UpdateHotkeys();
+                return;
+            }
+
+            if (!Settings.Hotkeys.ContainsKey(code))
                 return;
 
             if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyUp)
-                Hotkeys[code] = false;
+                Settings.Hotkeys[code] = false;
             if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown)
-                Hotkeys[code] = true;
+                Settings.Hotkeys[code] = true;
 
-            if (DateTime.Now.Subtract(lastTrigger).TotalSeconds > 2 && Hotkeys.All(hotkey => hotkey.Value))
+            if (DateTime.Now.Subtract(lastTrigger).TotalSeconds > 2 && Settings.Hotkeys.All(hotkey => hotkey.Value))
             {
                 lastTrigger = DateTime.Now;
+                Settings.Hotkeys = Settings.Hotkeys.ToDictionary(key => key.Key, pressed => false);
                 SwitchAudio();
             }
         }
@@ -68,7 +77,7 @@ namespace AudioSwitcher
                                 select text;
             if (defaultDevice == null)
                 return;
-            var pos = GetNewDevicePos(itemText, defaultDevice.First()[1] == Device1Information);
+            var pos = GetNewDevicePos(itemText, defaultDevice.First()[1] == Settings.Device1Information);
 
             SelectDevice(speakerListHandle, processHandle, lpRemoteBuffer, listViewItemSize, pos);
 
@@ -163,9 +172,9 @@ namespace AudioSwitcher
         {
             for (int i = 0; i < texts.Length; i++)
             {
-                if (speakers && texts[i][0] == Device2Name && texts[i][1] == Device2Information)
+                if (speakers && texts[i][0] == Settings.Device2Name && texts[i][1] == Settings.Device2Information)
                     return i;
-                if (!speakers && texts[i][0] == Device1Name && texts[i][1] == Device1Information)
+                if (!speakers && texts[i][0] == Settings.Device1Name && texts[i][1] == Settings.Device1Information)
                     return i;
             }
             throw new SystemException("Can't find position of the new device.");

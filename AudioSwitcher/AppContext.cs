@@ -7,6 +7,7 @@ namespace AudioSwitcher
     {
         private NotifyIcon notifyIcon;
         private Controller controller;
+        public static Configuration configuration;
         public AppContext()
         {
             MenuItem configurationMenuItem = new MenuItem("Configuration", new EventHandler(Configuration));
@@ -22,12 +23,13 @@ namespace AudioSwitcher
             notifyIcon.Visible = true;
             controller = new Controller();
             controller.SetupKeyboardHooks();
+            AppSettings<Settings>.Load();
         }
 
         void Configuration(object sender, EventArgs e)
         {
-            var configurationForm = new Configuration();
-            configurationForm.Show();
+            configuration = new Configuration();
+            configuration.Show();
         }
 
         void Exit(object sender, EventArgs e)

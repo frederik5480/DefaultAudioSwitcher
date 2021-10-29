@@ -39,9 +39,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.hotkeys = new System.Windows.Forms.TextBox();
             this.save = new System.Windows.Forms.Button();
             this.cancel = new System.Windows.Forms.Button();
+            this.record = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label4
@@ -131,18 +132,19 @@
             this.label6.TabIndex = 21;
             this.label6.Text = "Hotkey";
             // 
-            // textBox6
+            // hotkeys
             // 
-            this.textBox6.Location = new System.Drawing.Point(340, 33);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(119, 20);
-            this.textBox6.TabIndex = 20;
+            this.hotkeys.Location = new System.Drawing.Point(340, 33);
+            this.hotkeys.Name = "hotkeys";
+            this.hotkeys.ReadOnly = true;
+            this.hotkeys.Size = new System.Drawing.Size(209, 20);
+            this.hotkeys.TabIndex = 20;
             // 
             // save
             // 
-            this.save.Location = new System.Drawing.Point(295, 64);
+            this.save.Location = new System.Drawing.Point(282, 63);
             this.save.Name = "save";
-            this.save.Size = new System.Drawing.Size(75, 23);
+            this.save.Size = new System.Drawing.Size(84, 23);
             this.save.TabIndex = 22;
             this.save.Text = "Save";
             this.save.UseVisualStyleBackColor = true;
@@ -150,24 +152,35 @@
             // 
             // cancel
             // 
-            this.cancel.Location = new System.Drawing.Point(384, 64);
+            this.cancel.Location = new System.Drawing.Point(466, 63);
             this.cancel.Name = "cancel";
-            this.cancel.Size = new System.Drawing.Size(75, 23);
+            this.cancel.Size = new System.Drawing.Size(83, 23);
             this.cancel.TabIndex = 23;
-            this.cancel.Text = "Cancel";
+            this.cancel.Text = "Exit";
             this.cancel.UseVisualStyleBackColor = true;
-            this.cancel.Click += new System.EventHandler(this.Cancel_Click);
+            this.cancel.Click += new System.EventHandler(this.Exit_Click);
+            // 
+            // record
+            // 
+            this.record.Location = new System.Drawing.Point(372, 63);
+            this.record.Name = "record";
+            this.record.Size = new System.Drawing.Size(88, 23);
+            this.record.TabIndex = 24;
+            this.record.Text = "Clear";
+            this.record.UseVisualStyleBackColor = true;
+            this.record.Click += new System.EventHandler(this.Clear_Click);
             // 
             // Configuration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(485, 105);
+            this.ClientSize = new System.Drawing.Size(561, 105);
+            this.Controls.Add(this.record);
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.save);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.textBox6);
+            this.Controls.Add(this.hotkeys);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.label4);
@@ -199,8 +212,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox hotkeys;
         private System.Windows.Forms.Button save;
         private System.Windows.Forms.Button cancel;
+        private System.Windows.Forms.Button record;
     }
 }

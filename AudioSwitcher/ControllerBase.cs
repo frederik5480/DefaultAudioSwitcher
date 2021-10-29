@@ -1,7 +1,5 @@
-﻿using AudioSwitcher.Enums;
-using AudioSwitcher.Structs;
+﻿using AudioSwitcher.Structs;
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace AudioSwitcher
@@ -30,11 +28,7 @@ namespace AudioSwitcher
         protected const uint END = 0xFFF;
         protected const uint PROCESS_ALL_ACCESS = (DELETE | READ_CONTROL | WRITE_DAC | WRITE_OWNER | SYNCHRONIZE | END);
 
-        public static string Device1Name { get; set; } = "Speakers";
-        public static string Device1Information { get; set; } = "Focusrite Usb Audio";
-        public static string Device2Name { get; set; } = "Speakers";
-        public static string Device2Information { get; set; } = "Realtek High Definition Audio";
-        public static Dictionary<VirtualCode, bool> Hotkeys { get; set; } = new Dictionary<VirtualCode, bool>() { { VirtualCode.LCONTROL, false }, { VirtualCode.LMENU, false }, { VirtualCode.KEY_M, false } };
+        public static bool Recording { get; set; }
 
         [DllImport("user32.dll", SetLastError = true)]
         protected static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
