@@ -1,15 +1,13 @@
-﻿using AudioSwitcher.Structs;
+﻿using AudioSwitcher.Enums;
+using AudioSwitcher.Structs;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace AudioSwitcher
 {
     public class ControllerBase
     {
-        protected const string HEADSET = "Speakers";
-        protected const string HEADSET_SOUNDCARD = "Focusrite Usb Audio";
-        protected const string SPEAKERS = "Speakers";
-        protected const string SPEAKERS_SOUNDCARD = "Realtek High Definition Audio";
         protected const string AUDIO_TITLE = "Sound";
         protected const string DEFAULT_DEVICE = "Default Device";
         protected const string BUTTON = "Button";
@@ -31,6 +29,12 @@ namespace AudioSwitcher
         protected const uint SYNCHRONIZE = 0x00100000;
         protected const uint END = 0xFFF;
         protected const uint PROCESS_ALL_ACCESS = (DELETE | READ_CONTROL | WRITE_DAC | WRITE_OWNER | SYNCHRONIZE | END);
+
+        public static string Device1Name { get; set; } = "Speakers";
+        public static string Device1Information { get; set; } = "Focusrite Usb Audio";
+        public static string Device2Name { get; set; } = "Speakers";
+        public static string Device2Information { get; set; } = "Realtek High Definition Audio";
+        public static Dictionary<VirtualCode, bool> Hotkeys { get; set; } = new Dictionary<VirtualCode, bool>() { { VirtualCode.LCONTROL, false }, { VirtualCode.LMENU, false }, { VirtualCode.KEY_M, false } };
 
         [DllImport("user32.dll", SetLastError = true)]
         protected static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
