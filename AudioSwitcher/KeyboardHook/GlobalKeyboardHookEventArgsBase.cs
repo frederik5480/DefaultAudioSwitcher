@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace AudioSwitcher
+namespace AudioSwitcher.KeyboardHook
 {
     class GlobalKeyboardHookEventArgs : HandledEventArgs
     {
