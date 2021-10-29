@@ -23,7 +23,6 @@ namespace AudioSwitcher
         private void OnKeyPressed(object sender, GlobalKeyboardHookEventArgs e)
         {
             var code = (VirtualCode)e.KeyboardData.VirtualCode;
-            Debug.WriteLine(code);
             if (Recording)
             {
                 if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown && !Settings.Hotkeys.Keys.Contains(code))
