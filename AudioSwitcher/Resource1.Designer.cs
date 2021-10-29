@@ -63,9 +63,9 @@ namespace AudioSwitcher {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon icon128 {
+        internal static System.Drawing.Icon sound {
             get {
-                object obj = ResourceManager.GetObject("icon128", resourceCulture);
+                object obj = ResourceManager.GetObject("sound", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
