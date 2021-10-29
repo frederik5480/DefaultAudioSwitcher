@@ -11,35 +11,40 @@ namespace AudioSwitcher
     internal class Controller : ControllerBase, IDisposable
     {
         private GlobalKeyboardHook _globalKeyboardHook;
-        private bool ctrl;
-        private bool ctrlAlt;
-        private bool all;
+        private DateTime lastTrigger;
 
         public void SetupKeyboardHooks()
         {
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
+            lastTrigger = DateTime.Now;
         }
 
         private void OnKeyPressed(object sender, GlobalKeyboardHookEventArgs e)
         {
-            var code = e.KeyboardData.VirtualCode;
-            if (code == 162)
-                ctrl = true;
-            else if (ctrl && code == 164)
-                ctrlAlt = true;
-            else if (ctrlAlt && code == 77 && !all)
+            var code = (VirtualCode)e.KeyboardData.VirtualCode;
+            Debug.WriteLine(code);
+            if (Recording)
             {
-                all = true;
-                ctrl = false;
-                ctrlAlt = false;
-                SwitchAudio();
+                if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown && !Settings.Hotkeys.Keys.Contains(code))
+                    Settings.Hotkeys[code] = true;
+                AppContext.configuration.UpdateHotkeys();
+                return;
             }
-            else
+
+            if (!Settings.Hotkeys.ContainsKey(code))
+                return;
+
+            if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyUp)
+                Settings.Hotkeys[code] = false;
+            if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown)
+                Settings.Hotkeys[code] = true;
+
+            if (DateTime.Now.Subtract(lastTrigger).TotalSeconds > 2 && Settings.Hotkeys.All(hotkey => hotkey.Value))
             {
-                ctrl = false;
-                ctrlAlt = false;
-                all = false;
+                lastTrigger = DateTime.Now;
+                Settings.Hotkeys = Settings.Hotkeys.ToDictionary(key => key.Key, pressed => false);
+                SwitchAudio();
             }
         }
 
@@ -72,7 +77,7 @@ namespace AudioSwitcher
                                 select text;
             if (defaultDevice == null)
                 return;
-            var pos = GetNewDevicePos(itemText, defaultDevice.First()[1] == HEADSET_SOUNDCARD);
+            var pos = GetNewDevicePos(itemText, defaultDevice.First()[1] == Settings.Device1Information);
 
             SelectDevice(speakerListHandle, processHandle, lpRemoteBuffer, listViewItemSize, pos);
 
@@ -167,9 +172,9 @@ namespace AudioSwitcher
         {
             for (int i = 0; i < texts.Length; i++)
             {
-                if (speakers && texts[i][0] == SPEAKERS && texts[i][1] == SPEAKERS_SOUNDCARD)
+                if (speakers && texts[i][0] == Settings.Device2Name && texts[i][1] == Settings.Device2Information)
                     return i;
-                if (!speakers && texts[i][0] == HEADSET && texts[i][1] == HEADSET_SOUNDCARD)
+                if (!speakers && texts[i][0] == Settings.Device1Name && texts[i][1] == Settings.Device1Information)
                     return i;
             }
             throw new SystemException("Can't find position of the new device.");
